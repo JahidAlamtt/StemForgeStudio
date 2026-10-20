@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0c1020" />
+  <title>StemForge Studio — Music Stem Separator</title>
+  <meta name="description" content="Split music and video sound into vocals, drums, bass, instrumental, guitar, piano and more — locally on Windows, macOS and Linux." />
+  <link rel="stylesheet" href="/static/app.css" />
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <div class="page-glow glow-left"></div><div class="page-glow glow-right"></div>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+        <div><div class="brand-title">STEM<span>FORGE</span></div><div class="brand-subtitle">STUDIO <span class="version">/ 2.0 PORTABLE</span></div></div>
+      </div>
+      <div class="topbar-right"><span class="privacy"><span class="privacy-dot"></span> PRIVATE • LOCAL PROCESSING</span><span id="engineBadge" class="engine-badge pending">Checking engine…</span></div>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="eyebrow"><span class="star">✦</span> AI-POWERED SOURCE SEPARATION <span class="eyebrow-line"></span></div>
+        <h1>একটা গান। <span class="headline-accent">অনেকগুলো লেয়ার।</span></h1>
+        <p class="hero-subtitle">যেকোনো FFmpeg-supported Audio বা Video থেকে Vocal, Beat, Bass এবং Instrumental আলাদা করুন—তারপর প্রতিটি ট্র্যাক আলাদাভাবে Save করুন।</p>
+        <div class="hero-tags"><span>♪ VOCAL ISOLATION</span><span>◉ DRUM / BEAT</span><span>≋ INSTRUMENTALS</span><span>✧ 6-STEM MODE</span></div>
+      </section>
+
+      <section class="workspace" aria-label="Music separator">
+        <div class="panel panel-upload">
+          <div class="panel-header"><div class="panel-heading"><span class="step">01</span><span>ADD YOUR MEDIA</span></div><span class="panel-helper">MULTIPLE FILES SUPPORTED</span></div>
+          <div id="dropzone" class="dropzone" role="button" tabindex="0" aria-label="Choose audio or video files">
+            <input type="file" id="fileInput" multiple aria-label="Choose media files" />
+            <div class="drop-graphic" aria-hidden="true"><svg viewBox="0 0 80 80" fill="none"><rect x="12" y="12" width="56" height="56" rx="18" stroke="currentColor" stroke-opacity=".35" stroke-width="1.5" stroke-dasharray="5 5"/><path d="M40 52V27m0 0-10 10m10-10 10 10" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h2>Drag & Drop <span>your files here</span></h2>
+            <p>Audio / Video — MP3, WAV, FLAC, MP4, MKV, MOV, AAC, OGG, WEBM and more</p>
+            <button id="browseBtn" class="browse-btn" type="button">+ Choose files</button>
+            <span class="drop-note">MAX 2 GB PER FILE · LOCALLY PROCESSED</span>
+          </div>
+          <div id="selectedSection" class="selected-section hidden"><div class="selected-heading"><span>SELECTED FILES</span><button type="button" class="text-btn" id="clearBtn">Clear all</button></div><div id="selectedFiles"></div></div>
+        </div>
+
+        <div class="panel panel-settings">
+          <div class="panel-header"><div class="panel-heading"><span class="step">02</span><span>SEPARATION SETTINGS</span></div><span class="panel-helper">CUSTOMIZE OUTPUT</span></div>
+          <div class="field-heading"><label for="model">SEPARATION MODEL</label><span class="field-hint">Choose stem count / quality</span></div>
+          <div class="model-group" role="group" aria-label="Separation model">
+            <label class="model-choice"><input type="radio" name="model" value="htdemucs" checked><span class="model-content"><span class="model-top"><strong>4 Stems</strong><span class="model-badge">RECOMMENDED</span></span><small>Vocals · Drums · Bass · Other</small><span class="model-bottom">Fast • Balanced accuracy</span></span><span class="radio-mark"></span></label>
+            <label class="model-choice"><input type="radio" name="model" value="htdemucs_6s"><span class="model-content"><span class="model-top"><strong>6 Stems</strong><span class="model-badge purple">MORE CONTROL</span></span><small>+ Guitar · Piano</small><span class="model-bottom">More sources • Piano may vary</span></span><span class="radio-mark"></span></label>
+            <label class="model-choice"><input type="radio" name="model" value="htdemucs_ft"><span class="model-content"><span class="model-top"><strong>4 Stems Pro</strong><span class="model-badge muted">SLOWER</span></span><small>Fine-tuned 4-stem model</small><span class="model-bottom">Potentially higher quality</span></span><span class="radio-mark"></span></label>
+          </div>
+          <div class="setting-grid">
+            <div class="field"><label for="format">EXPORT FORMAT</label><select id="format"><option value="wav">WAV — 24-bit</option><option value="mp3">MP3 — 320 kbps</option><option value="flac">FLAC — Lossless</option></select></div>
+            <div class="field"><label for="device">PROCESSING DEVICE</label><select id="device"><option value="auto">Auto — GPU if available</option><option value="cpu">CPU only</option></select></div>
+          </div>
+          <div class="always-include"><span class="include-icon">✓</span><span>Extra exports included: <b>Instrumental (no vocals)</b> + <b>Rhythm (drums & bass)</b></span></div>
+          <button id="startBtn" class="start-btn" disabled type="button"><span class="btn-main">✦ &nbsp; SEPARATE TRACKS</span><span class="btn-arrow">↗</span></button>
+          <div id="uploadStatus" class="upload-status" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="results" aria-labelledby="resultsTitle">
+        <div class="results-head"><div><div class="eyebrow mini">YOUR WORKSPACE</div><h2 id="resultsTitle">Separated tracks <span class="muted-heading">/ Exports</span></h2></div><button class="refresh-btn" id="refreshBtn" type="button">↻ &nbsp; Refresh</button></div>
+        <div id="emptyState" class="empty-state"><div class="empty-icon" aria-hidden="true">♫</div><strong>Your stems will appear here.</strong><p>উপরে একটি Audio বা Video ফাইল নির্বাচন করে Start করুন।</p></div>
+        <div id="jobs" class="job-list" aria-live="polite"></div>
+      </section>
+      <div class="info-strip"><span>⚡ Built-in Demucs + FFmpeg • No separate installs</span><span>✧ Files processed on your own computer</span><span>⬡ Windows • macOS • Linux</span></div>
+    </main>
+    <footer><span>STEMFORGE STUDIO <span class="copyright">© 2026</span></span><span>Use files you have permission to process. Separation is approximate.</span><button id="closeAppBtn" class="close-app-btn" type="button">× CLOSE APP</button></footer>
+  </div>
+</body>
+</html>

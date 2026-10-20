@@ -1,0 +1,10 @@
+StemForge Studio 2.0 — NO separate Python or FFmpeg installation for end users.
+
+IMPORTANT: This is the SOURCE + AUTOMATIC BUILDER package, not yet the compiled .exe/.app.
+
+Want Windows/Mac/Linux ready-to-run apps?
+1. Upload this project's files to your GitHub repository. Keep .github/workflows/build-portable.yml
+2. Actions -> Build standalone StemForge apps -> Run workflow
+3. Download the OS-specific artifact and extract it; just open the app.
+
+Details in Bangla: README_BN.md

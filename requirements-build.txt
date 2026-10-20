@@ -1,0 +1,7 @@
+# ONLY FOR CI BUILD MACHINES. End users do not need these packages.
+# Torch and torchaudio are installed separately to match the runner's CPU/OS.
+pyinstaller>=6.16,<7
+numpy==1.26.4
+demucs==4.0.1
+imageio-ffmpeg==0.6.0
+soundfile>=0.12.1,<1
